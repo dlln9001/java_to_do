@@ -1,0 +1,17 @@
+# Compiled class files
+target/
+
+# Logs
+*.log
+
+# IDE files
+/.idea/
+/*.iml
+/.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Spring Boot devtools restart files
+spring-boot-devtools.properties
