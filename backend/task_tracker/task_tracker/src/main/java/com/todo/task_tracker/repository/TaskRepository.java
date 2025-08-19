@@ -6,5 +6,5 @@ import com.todo.task_tracker.model.Task;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    // You can add custom queries here if needed
+    // can add custom queries here if needed
 }
