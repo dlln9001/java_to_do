@@ -44,7 +44,7 @@ function App() {
             placeholder="Add a new todo..."
             onKeyPress={(e) => e.key === 'Enter' && addTodo()}
           />
-          <Button onClick={addTodo}>Add</Button>
+          <Button onClick={addTodo} className="cursor-pointer">Add</Button>
         </div>
 
         <div className="space-y-2">
