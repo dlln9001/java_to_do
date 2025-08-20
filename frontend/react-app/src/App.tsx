@@ -53,7 +53,18 @@ function App() {
   }
 
   const deleteTodo = (id: number) => {
-    setTodos(todos.filter(todo => todo.id !== id))
+    
+    fetch(base_url + `/tasks/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      if (res.ok) {
+        setTodos(todos.filter(todo => todo.id !== id))
+      }
+    })
   }
 
   const toggleTodo = (id: number) => {
