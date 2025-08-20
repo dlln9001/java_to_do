@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,7 +8,7 @@ import { X } from "lucide-react"
 
 interface Todo {
   id: number;
-  text: string;
+  title: string;
   completed: boolean;
 }
 
@@ -16,9 +16,23 @@ function App() {
   const [todos, setTodos] = useState<Todo[]>([])
   const [newTodo, setNewTodo] = useState('')
 
+  const base_url: string = "http://localhost:8080"
+
+  useEffect(() => {
+    fetch(base_url + "/tasks", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(data => setTodos(data))
+
+  }, [])
+
   const addTodo = () => {
     if (newTodo.trim() === '') return
-    setTodos([...todos, { id: Date.now(), text: newTodo, completed: false }])
+    setTodos([...todos, { id: Date.now(), title: newTodo, completed: false }])
     setNewTodo('')
   }
 
@@ -27,7 +41,7 @@ function App() {
   }
 
   const toggleTodo = (id: number) => {
-    setTodos(todos.map(todo => 
+    setTodos(todos.map(todo =>
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     ))
   }
@@ -36,7 +50,7 @@ function App() {
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-md mx-auto space-y-6">
         <h1 className="text-3xl font-bold text-center mb-8">Todo List</h1>
-        
+
         <div className="flex gap-2">
           <Input
             value={newTodo}
@@ -57,7 +71,7 @@ function App() {
                     onCheckedChange={() => toggleTodo(todo.id)}
                   />
                   <span className={todo.completed ? 'line-through text-muted-foreground' : ''}>
-                    {todo.text}
+                    {todo.title}
                   </span>
                 </div>
                 <Button
