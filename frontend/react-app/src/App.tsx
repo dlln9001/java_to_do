@@ -21,9 +21,6 @@ function App() {
   useEffect(() => {
     fetch(base_url + "/tasks", {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
     })
       .then(res => res.json())
       .then(data => setTodos(data))
@@ -67,10 +64,26 @@ function App() {
     })
   }
 
-  const toggleTodo = (id: number) => {
-    setTodos(todos.map(todo =>
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ))
+  const toggleTodo = (new_todo: Todo) => {
+
+    fetch(base_url + `/tasks/${new_todo.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "title": new_todo.title,
+        "completed": !new_todo.completed
+      })
+    })
+    .then(res => {
+       if (res.ok) {
+         setTodos(todos.map(todo =>
+           todo.id === new_todo.id ? { ...todo, completed: !todo.completed } : todo
+         ))
+       }
+    })
+    
   }
 
   return (
@@ -95,7 +108,7 @@ function App() {
                 <div className="flex items-center gap-2">
                   <Checkbox
                     checked={todo.completed}
-                    onCheckedChange={() => toggleTodo(todo.id)}
+                    onCheckedChange={() => toggleTodo(todo)}
                   />
                   <span className={todo.completed ? 'line-through text-muted-foreground' : ''}>
                     {todo.title}
