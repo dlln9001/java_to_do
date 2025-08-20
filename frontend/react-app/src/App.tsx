@@ -32,7 +32,23 @@ function App() {
 
   const addTodo = () => {
     if (newTodo.trim() === '') return
-    setTodos([...todos, { id: Date.now(), title: newTodo, completed: false }])
+    
+    fetch(base_url + "/tasks", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "title": newTodo,
+        "completed": false
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      setTodos([...todos, { id: data.id, title: data.title, completed: data.completed }])
+    }
+)
+
     setNewTodo('')
   }
 
