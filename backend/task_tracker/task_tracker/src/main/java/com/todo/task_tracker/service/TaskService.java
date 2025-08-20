@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import com.todo.task_tracker.repository.TaskRepository;
 import com.todo.task_tracker.model.Task;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -27,5 +28,13 @@ public class TaskService {
             return true;
         }
         return false;
+    }
+
+    public Optional<Task> updateTask(Long id, Task updatedTask) {
+        return taskRepository.findById(id).map(existingTask -> {
+            existingTask.setTitle(updatedTask.getTitle());
+            existingTask.setCompleted(updatedTask.isCompleted());
+            return taskRepository.save(existingTask);
+        });
     }
 }
